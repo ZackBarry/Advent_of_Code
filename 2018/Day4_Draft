@@ -1,0 +1,55 @@
+import operator
+
+# find the start of a guard's shift
+
+gaurd_name = re.compile(r'Guard #(\d+)')
+sleep_time = re.compile(r'\d\d:(\d\d)')
+
+SleepInfo = {}
+
+string on_duty = ''
+int dozes = 0
+int wakes = 0
+
+for event in data:
+  if 'Guard' in event:
+     on_duty = guard_name.find(event).groups()[1]
+  elif 'falls asleep' in event:
+     dozes = int(sleep_time.find(event).groups()[1])
+  elif 'wakes up' in event:
+     wakes = int(sleep_time.find(event).groups()[1])
+     length = wakes - dozes
+     SleepInfo.setdefault(on_duty,0)
+     SleepInfo[on_duty] += length
+
+# get the longest sleep time
+
+max_item = max(SleepInfo.iteritems(), key=operator.itemgetter(1))
+max_id = max_item[0]
+max_length = max_item[1]
+
+# get the time that the guard most often sleeps during
+
+TimeInfo = {}
+
+for event in data
+     for event in data:
+  if 'Guard' in event:
+     on_duty = guard_name.find(event).groups()[1]
+  elif 'falls asleep' in event:
+     dozes = int(sleep_time.find(event).groups()[1])
+  elif 'wakes up' in event:
+     wakes = int(sleep_time.find(event).groups()[1])
+     if on_duty = max_id:
+        for i in range(dozes, wakes)
+        TimeInfo.setdefault(i,0)
+        TimeInfo[i] += 1
+
+max_time = max(TimeInfo.iteritems(), key=operator.itemgetter(1))[0]
+
+# find the product of the ID and the most slept time
+
+solution = max_id * max_time
+
+     
+    
