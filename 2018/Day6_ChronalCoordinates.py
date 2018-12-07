@@ -54,69 +54,75 @@ for i, coord in enumerate(Coordinates):
 #  where the first value is a coordinate index and the second is the distance from that
 #  coordinate to the key
 
-Area = {}
+Interior = {}
 
 # initialize by calculating each distance to the first coordinate
 
-for i in range(left_border, right_border):
-    for j in range(bottom_border, top_border):
-        Area[(i, j)] = [0, man_dist((i, j), Coordinates[0])]
+for i in range(left_border + 1, right_border):
+    for j in range(bottom_border + 1, top_border):
+        Interior[(i, j)] = [0, man_dist((i, j), Coordinates[0])]
 
-# now check to see which value from Coordinates is closes to each Area key
+# initialize by calculating each distance to the first coordinate
 
-for point in Area.keys():
+Border = {}
+
+for i in range(left_border, right_border + 1):
+    for j in [bottom_border, top_border]:
+        Border[(i, j)] = [0, man_dist((i, j), Coordinates[0])]
+
+for j in range(bottom_border, top_border + 1):
+    for i in [left_border, right_border]:
+        Border[(i, j)] = [0, man_dist((i, j), Coordinates[0])]
+
+# now check to see which value from Coordinates is closes to each Interior key
+
+for point in Interior.keys():
     for i, coord in enumerate(Coordinates):
         dist = man_dist(point, coord)
-        if dist < Area[point][1]:
-            Area[point][1] = dist
-            Area[point][0] = i
+        if dist < Interior[point][1]:
+            Interior[point][1] = dist
+            Interior[point][0] = i
+        elif dist == Interior[point][1]:
+            # equidistant points are not owned by any point
+            Interior[point][0] = -1
 
-# now iterate over Area to store each coord from Coordinates and the number of points
-#  it is closest to in Finite_Areas
+# now check to see which value from Coordinates is closes to each Border key
 
-Finite_Areas = {}
-
-for point in Area.keys():
-    Finite_Areas.setdefault(Area[point][0], 0)
-    Finite_Areas[Area[point][0]] += 1
-
-# now find which coords in Coordinate are closest to infinite areas
-
-Area2 = {}
-
-for i in range(left_border - 1000, right_border + 1000):
-    for j in [bottom_border - 1000, top_border + 1000]:
-        Area2[(i, j)] = [0, man_dist((i, j), Coordinates[0])]
-
-for j in range(bottom_border - 1000, top_border + 1000):
-    for i in [left_border - 1000, right_border - 1000]:
-        Area2[(i, j)] = [0, man_dist((i, j), Coordinates[0])]
-
-for point in Area2.keys():
+for point in Border.keys():
     for i, coord in enumerate(Coordinates):
         dist = man_dist(point, coord)
-        if dist < Area2[point][1]:
-            Area2[point][1] = dist
-            Area2[point][0] = i
+        if dist < Border[point][1]:
+            Border[point][1] = dist
+            Border[point][0] = i
+        elif dist == Border[point][1]:
+            # equidistant points are not owned by any point
+            Border[point][0] = -1
 
-Infinite_Areas = {}
+# now iterate over Interior to store each coord from Coordinates and the number of points
+#  it is closest to in Areas
 
-for point in Area2.keys():
-    Infinite_Areas.setdefault(Area2[point][0], 0)
-    Infinite_Areas[Area2[point][0]] += 1
+Areas = {}
 
-print(sorted(Infinite_Areas.keys()))
+for point in Interior.keys():
+    Areas.setdefault(Interior[point][0], 0)
+    Areas[Interior[point][0]] += 1
 
-max_area = -1
+# now find which coords in Coordinate are closest to a border point
 
-# tupled = [tuple(Coordinates[left_coord]), tuple(Coordinates[right_coord]), tuple(Coordinates[top_coord]), tuple(Coordinates[bottom_coord])]
+BorderCords = []
 
-for point, area in Finite_Areas.items():
-    if point not in Infinite_Areas.keys():
-        print(point)
+for value in Border.values():
+    if value[0] not in BorderCords:
+        BorderCords.append(value[0])
+
+# now find the largest finite area
+
+max_area = 0
+
+for point, area in Areas.items():
+    if point not in BorderCords:
+        print(point, area)
         max_area = max(max_area, area)
-
-# print(tupled)
 
 print("The largest finite area is", max_area)
 
