@@ -30,13 +30,11 @@ def test_reaction(let1, let2):
 
 def find_reaction(atoms):
     for i, letter in enumerate(atoms[:len(atoms) - 1]):
-        if i + 1 > len(atoms) - 1:
-            return atoms
         if test_reaction(letter, atoms[i+1]):
-            if i + 2 > len(atoms) - 1:
+            if i+2 > len(atoms) - 1:
                 return atoms[:i]
             else:
-                atoms = atoms[:i] + atoms[i+2:]
+                return atoms[:i] + atoms[i+2:]
     return atoms
 
 
@@ -53,9 +51,9 @@ def react_polymer(species):
 
 # determine the length after reacting everything
 
-#reacted_polymer = react_polymer(polymer)
+reacted_polymer = react_polymer(polymer)
 
-#print("Task 1 Solution: reacted length = " + str(len(reacted_polymer)) + ".")
+print("Task 1 Solution: reacted length = " + str(len(reacted_polymer)) + ".")
 
 
 # -------------------------------------------------------------------------
@@ -80,10 +78,13 @@ removed_letter = ""
 
 for item in letters:
     print(item)
+    print(len(polymer))
     new_polymer = remove_letter(polymer, item)
-    if len(react_polymer(new_polymer)) < shortest_length:
-        shortest_length = len(react_polymer(new_polymer))
+    new_polymer = react_polymer(new_polymer)
+    if len(new_polymer) < shortest_length:
+        shortest_length = len(new_polymer)
         removed_letter = item
+        print("new shortest length of", shortest_length, "from removing", item)
 
-print("Task 2 Solution: The shortest length is " + str(shortest_length) + " after removing " + item + ".")
+print("Task 2 Solution: The shortest length is", shortest_length, "after removing", item)
 
