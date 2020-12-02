@@ -1,5 +1,5 @@
 
-entries = [int(x) for x in open('2020/01-input.txt').read().strip().split('\n')]
+entries = [int(x) for x in open('2020/01-input.txt').read().splitlines()]
 
 
 def part_one(expenses, target_sum):
