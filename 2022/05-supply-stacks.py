@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from collections import defaultdict
 
 input = open('05-input.txt').read().splitlines()
