@@ -1,4 +1,4 @@
-from collections import defaultdict
+#!/usr/bin/env python3
 
 
 def part_one(trees):
