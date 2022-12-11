@@ -92,9 +92,7 @@ def calc_monkey_business(monkeys, rounds):
     for _ in range(rounds):
         monkeys = round(monkeys)
 
-    activity = []
-    for i, m in monkeys.items():
-        activity.append(m.inspections)
+    activity = [m.inspections for m in monkeys.values()]
     
     return sorted(activity)[-1] * sorted(activity)[-2]
 
